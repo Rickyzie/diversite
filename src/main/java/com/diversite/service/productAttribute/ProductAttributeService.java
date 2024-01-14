@@ -12,15 +12,14 @@ import java.util.List;
 public class ProductAttributeService {
     private final ProductAttributeMapper productAttributeMapper;
 
+
     @Autowired
     public ProductAttributeService(ProductAttributeMapper productAttributeMapper) {
         this.productAttributeMapper = productAttributeMapper;
     }
 
     @Transactional
-    public void getAllProductAttributes(Integer productId) {
-        productAttributeMapper.getAllProductAttributes(productId);
+    public  List<ProductAttributeEntity> getAllProductAttributes(Integer productId) {
+       return productAttributeMapper.getAllProductAttributes(productId);
     }
-
-
 }

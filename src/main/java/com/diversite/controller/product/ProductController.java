@@ -1,10 +1,14 @@
 package com.diversite.controller.product;
 
 import com.diversite.entity.product.ProductEntity;
+import com.diversite.error.ApiError;
 import com.diversite.service.product.ProductService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/products")
 public class ProductController {
@@ -22,9 +26,13 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductEntity> getProductById(@PathVariable Integer id) {
-        ProductEntity product = productService.getProductById(id);
-        return ResponseEntity.ok(product);
+    public ResponseEntity<?> getProductById(@PathVariable Integer id) {
+        Optional<ProductEntity> product = Optional.ofNullable(productService.getProductById(id));
+        if(product.isPresent()){
+            return ResponseEntity.ok(product.get());
+        }else{
+            return ResponseEntity.ok(new ApiError("EntityNotFound", "Product not found"));
+        }
     }
 
     @GetMapping
