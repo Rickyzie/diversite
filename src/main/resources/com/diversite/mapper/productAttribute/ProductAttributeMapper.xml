@@ -18,4 +18,8 @@
         <result column="attribute_name" property="attributeName"/>
         <result column="attribute_values" property="attributeValues" typeHandler="org.apache.ibatis.type.ArrayTypeHandler"/>
     </resultMap>
+    
+    <insert id="addProductAttribute" parameterType="com.diversite.entity.productAttribute.ProductAttributeIdEntity">
+        INSERT INTO product_attribute(product_id, attribute_id) VALUES (#{productId}, #{attributeId})
+    </insert>
 </mapper>
