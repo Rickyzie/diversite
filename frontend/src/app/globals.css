@@ -1,4 +1,4 @@
-:root {
+/* :root {
   --max-width: 1100px;
   --border-radius: 12px;
   --font-mono: ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono",
@@ -71,12 +71,33 @@
     --card-rgb: 100, 100, 100;
     --card-border-rgb: 200, 200, 200;
   }
-}
+} */
+
+/* body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+} */
+
+/* @media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+} */
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC&family=Protest+Revolution&display=swap');
 
 * {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+  font-family: 'Protest Revolution' , 'Noto Sans TC', "Helvetica", "Arial","LiHei Pro","黑體-繁","微軟正黑體", sans-serif  !important;
 }
 
 html,
@@ -85,23 +106,12 @@ body {
   overflow-x: hidden;
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
 
 a {
   color: inherit;
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-}
+
+
+
