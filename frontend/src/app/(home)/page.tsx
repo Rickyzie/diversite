@@ -3,7 +3,6 @@
 import Image from "next/image";
 import Carousel from "react-material-ui-carousel";
 import { Button, Link as MuiLink, Paper, Typography } from "@mui/material";
-import GlobalLayout from "./globalLayout";
 import Breadcrumbs from "../../component/breadcrumbs/Breadcrumbs";
 
 
@@ -37,12 +36,10 @@ export default function Home() {
 ]
 
 return (
-  <GlobalLayout>
     <Carousel>
         {
             items.map( (item, i) => <Item key={i} item={item.src} /> )
         }
     </Carousel>
-  </GlobalLayout>
 )
 }
