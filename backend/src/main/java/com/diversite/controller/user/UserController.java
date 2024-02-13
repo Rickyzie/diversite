@@ -1,7 +1,10 @@
 package com.diversite.controller.user;
 
 import com.diversite.entity.user.UserEntity;
+import com.diversite.response.ApiResponse;
 import com.diversite.service.user.UserService;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,9 +21,18 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createUser(@RequestBody UserEntity userEntity) {
-        userService.addUser(userEntity);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<ApiResponse<Boolean>> createUser(UserEntity userEntity) {
+        try {
+            Boolean isAdded = userService.addUser(userEntity);
+            if(isAdded){
+                return ResponseEntity.ok(new ApiResponse<Boolean>(true));
+            }
+        } catch (DuplicateKeyException e) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new ApiResponse<>("duplicate key error"));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new ApiResponse<>("createUser error" ));
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse<>(" error" ));
     }
 
     @GetMapping("/{id}")

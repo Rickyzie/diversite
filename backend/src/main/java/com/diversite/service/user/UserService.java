@@ -18,8 +18,8 @@ public class UserService {
     }
 
     @Transactional
-    public void addUser(UserEntity userEntity) {
-        userMapper.insertUser(userEntity);
+    public Boolean addUser(UserEntity userEntity) {
+        return userMapper.insertUser(userEntity);
     }
 
     @Transactional(readOnly = true)
