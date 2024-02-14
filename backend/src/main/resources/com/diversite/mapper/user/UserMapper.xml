@@ -11,7 +11,11 @@
 
     <!-- Select User by ID -->
     <select id="getUserById" resultType="com.diversite.entity.user.UserEntity">
-        SELECT * FROM users WHERE id = #{id}
+        SELECT * FROM users WHERE email = #{email} AND password_hash = #{passwordHash}
+    </select>
+
+    <select id="findByEmailAndPassword" resultType="com.diversite.entity.user.UserEntity">
+        SELECT * FROM users WHERE id = #{id} LIMIT 1
     </select>
 
     <!-- Select All Users -->

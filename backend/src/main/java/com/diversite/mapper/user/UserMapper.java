@@ -9,6 +9,7 @@ import java.util.List;
 public interface UserMapper {
      Boolean insertUser(UserEntity userEntity);
      UserEntity getUserById(Integer id);
+     UserEntity findByEmailAndPassword(String email, String passwordHash);
      List<UserEntity> getAllUsers();
      void updateUser(UserEntity userEntity);
      void deleteUser(Integer id);

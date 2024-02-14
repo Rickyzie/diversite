@@ -28,6 +28,12 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
+    public UserEntity findByEmailAndPassword(String email, String passwordHash) {
+        return userMapper.findByEmailAndPassword(email, passwordHash);
+    }
+
+
+    @Transactional(readOnly = true)
     public List<UserEntity> getAllUsers() {
         return userMapper.getAllUsers();
     }
