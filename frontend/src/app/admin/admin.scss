@@ -1,0 +1,20 @@
+.MuiFormLabel-root  {
+    color: #fff;
+}
+
+.MuiButton-root {
+    &:hover {
+        background-color: #c82825;
+    }
+}
+
+.MuiInput-underline {
+    &::before {
+        border-color: #fff;
+    }
+}
+
+.MuiInput-input {
+    background-color: #0d0d0f !important;
+    padding: 10px;
+}

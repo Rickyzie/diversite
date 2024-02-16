@@ -15,7 +15,6 @@ export default function GlobalLayout ({
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline enableColorScheme />
-            <Topbar/>
             <Container maxWidth="xl">
             {children}            
             </Container>

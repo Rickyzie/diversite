@@ -14,30 +14,23 @@ export default createTheme({
         MuiPaper: {
             styleOverrides: {
                 root: {
-                    backgroundColor:"#302d2d"
                 }
             }
         }
     },
     palette: {
         background:{
-            default:  "#302d2d"
+            default:  "#141618"
         },
         text: {
             primary: "#fff"
         },
         primary: {
-        light: '#ee9c9d',
-        main: '#ef5756',
-        dark: '#e53f3c',
-        contrastText: '#fff',
+            light: '#c82825',
+            main: '#ac1412',
+            dark: '#0d0d0f',
+            contrastText: "#fff",
+        },
         
-        },
-        secondary: {
-        light: '#a9a5a5',
-        main: '#605d5d',
-        dark: '#302d2d',
-        contrastText: '#fff',
-        },
     },
 });
