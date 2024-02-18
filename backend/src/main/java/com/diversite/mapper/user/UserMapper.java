@@ -10,6 +10,7 @@ public interface UserMapper {
      Boolean insertUser(UserEntity userEntity);
      UserEntity getUserById(Integer id);
      UserEntity findByEmailAndPassword(String email, String passwordHash);
+     UserEntity findByEmail(String email);
      List<UserEntity> getAllUsers();
      void updateUser(UserEntity userEntity);
      void deleteUser(Integer id);

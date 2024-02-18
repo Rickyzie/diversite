@@ -1,4 +1,4 @@
-package com.diversite.controller.user.pojo;
+package com.diversite.service.user.pojo;
 
 import lombok.Data;
 

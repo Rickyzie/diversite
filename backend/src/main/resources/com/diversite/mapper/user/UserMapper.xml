@@ -3,27 +3,35 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.diversite.mapper.user.UserMapper">
 
-    <!-- Insert User -->
     <insert id="insertUser" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO users (name, email, password_hash, phone_number, address)
         VALUES (#{name}, #{email}, #{passwordHash}, #{phoneNumber}, #{address})
     </insert>
 
-    <!-- Select User by ID -->
-    <select id="getUserById" resultType="com.diversite.entity.user.UserEntity">
+    <select id="findByEmailAndPassword" resultType="com.diversite.entity.user.UserEntity">
         SELECT * FROM users WHERE email = #{email} AND password_hash = #{passwordHash}
     </select>
 
-    <select id="findByEmailAndPassword" resultType="com.diversite.entity.user.UserEntity">
+    <select id="findByEmail" resultMap="findByEmailMap">
+        SELECT * FROM users WHERE email = #{email} LIMIT 1
+    </select>
+    <resultMap id="findByEmailMap" type="com.diversite.entity.user.UserEntity">
+        <result column="name" property="name"/>
+        <result column="email" property="email"/>
+        <result column="password_hash" property="passwordHash"/>
+        <result column="phone_number" property="phoneNumber"/>
+        <result column="create_at" property="createAt"/>
+        <result column="updata_at" property="updataAt"/>
+    </resultMap>
+
+    <select id="getUserById" resultType="com.diversite.entity.user.UserEntity">
         SELECT * FROM users WHERE id = #{id} LIMIT 1
     </select>
 
-    <!-- Select All Users -->
     <select id="getAllUsers" resultType="com.diversite.entity.user.UserEntity">
         SELECT * FROM users
     </select>
 
-    <!-- Update User -->
     <update id="updateUser">
         UPDATE users
         SET name = #{name},

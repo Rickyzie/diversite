@@ -3,13 +3,14 @@ package com.diversite.service.user;
 import com.diversite.entity.user.UserEntity;
 import com.diversite.mapper.user.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-public class UserService {
+public class UserService  {
     private final UserMapper userMapper;
 
     @Autowired
@@ -30,6 +31,11 @@ public class UserService {
     @Transactional(readOnly = true)
     public UserEntity findByEmailAndPassword(String email, String passwordHash) {
         return userMapper.findByEmailAndPassword(email, passwordHash);
+    }
+
+    @Transactional(readOnly = true)
+    public UserEntity findByEmail(String email ) {
+        return userMapper.findByEmail(email);
     }
 
 

@@ -1,14 +1,17 @@
 package com.diversite.controller.user;
 
-import com.diversite.controller.user.pojo.UserLoginForm;
-import com.diversite.controller.user.pojo.UserSignupForm;
+import com.diversite.service.user.UserAccount;
+import com.diversite.service.user.UserAccountService;
+import com.diversite.service.user.pojo.UserLoginForm;
+import com.diversite.service.user.pojo.UserSignupForm;
 import com.diversite.entity.user.UserEntity;
 import com.diversite.response.ApiResponse;
 import com.diversite.service.user.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,11 +23,13 @@ import java.util.Optional;
 public class UserController {
 
     private final UserService userService;
+    private final UserAccountService userAccountService;
     private final BCryptPasswordEncoder passwordEncoder;
 
 
-    public UserController(UserService userService, BCryptPasswordEncoder passwordEncoder) {
+    public UserController(UserService userService,UserAccountService userAccountService,  BCryptPasswordEncoder passwordEncoder) {
         this.userService = userService;
+        this.userAccountService = userAccountService;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -54,17 +59,18 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse<Boolean>> loginUser(UserLoginForm userLoginForm) {
+    public ResponseEntity<ApiResponse<Boolean>> loginUser(UserLoginForm userLoginForm, HttpSession session) {
         try {
-            String passwordHash = passwordEncoder.encode(userLoginForm.getPassword());
-            UserEntity userEntity = userService.findByEmailAndPassword(userLoginForm.getEmail(), passwordHash);
-            if(userEntity != null){
+            UserEntity userEntity = userService.findByEmail(userLoginForm.getEmail());
+            boolean isMatch = passwordEncoder.matches(userLoginForm.getPassword(), userEntity.getPasswordHash());
+
+            if(isMatch){
+                UserDetails userDetails = userAccountService.loadUserByUsername(userEntity.getEmail());
+                session.setAttribute("user", userDetails);
                 return ResponseEntity.ok(new ApiResponse<Boolean>(true));
             }
-        } catch (DuplicateKeyException e) {
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new ApiResponse<>("duplicate key error"));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new ApiResponse<>("createUser error" ));
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new ApiResponse<>("loginUser error" ));
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse<>(" error" ));
     }
@@ -74,6 +80,16 @@ public class UserController {
         UserEntity userEntity = userService.getUserById(id);
         return ResponseEntity.ok(userEntity);
     }
+
+    @GetMapping("/session")
+    public ResponseEntity<ApiResponse<Boolean>> testSession(HttpSession session) {
+        UserDetails userDetails = (UserDetails) session.getAttribute("user");
+        if(userDetails != null){
+            return ResponseEntity.ok(new ApiResponse<Boolean>(true));
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse<>(" error" ));
+    }
+
 
     @GetMapping
     public ResponseEntity<List<UserEntity>> getAllUsers() {
