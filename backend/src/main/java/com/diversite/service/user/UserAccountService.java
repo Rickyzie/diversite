@@ -2,7 +2,6 @@ package com.diversite.service.user;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 
 import com.diversite.entity.user.UserEntity;
 import org.springframework.security.core.GrantedAuthority;
@@ -11,8 +10,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.stereotype.Service;
 
 
@@ -21,10 +18,8 @@ public class UserAccountService implements  UserDetailsService {
 
     private UserService userService;
 
-    private BCryptPasswordEncoder passwordEncoder;
 
     public UserAccountService(UserService userService) {
-        this.passwordEncoder = new BCryptPasswordEncoder();
         this.userService = userService;
     }
 
@@ -36,7 +31,7 @@ public class UserAccountService implements  UserDetailsService {
         userAccount.setId(String.valueOf(userEntity.getId()));
         userAccount.setAccount(userEntity.getEmail());
         userAccount.setPassword(userEntity.getPasswordHash());
-        List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")); // Example authority
+        List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("USER")); // Example authority
         return new User(userEntity.getEmail(), userEntity.getPasswordHash(), authorities);
     }
 }
