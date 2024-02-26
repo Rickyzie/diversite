@@ -1,82 +1,65 @@
 "use client"
-import "./admin.scss"
-import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
+import {
+    Admin,
+    CustomRoutes,
+    Resource,
+    localStorageStore,
+    useStore,
+    StoreContextProvider,
+} from 'react-admin';
+import { Route } from 'react-router';
+
+import authProvider from './authProvider';
+import categories from './categories';
+import invoices from './invoices';
+import { Layout, Login } from './layoutComponent';
+import orders from './orders';
+import products from './products';
+import reviews from './reviews';
+import Segments from './segments/Segments';
+import visitors from './visitors';
+import { themes, ThemeName } from './themes/themes';
 
 
-export default function SignIn() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-  };
+const store = localStorageStore(undefined, 'ECommerce');
 
-  return (
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
+const App = () => {
+    const [themeName] = useStore<ThemeName>('themeName', 'soft');
+    const lightTheme = themes.find(theme => theme.name === themeName)?.light;
+    const darkTheme = themes.find(theme => theme.name === themeName)?.dark;
+    return (
+        <Admin
+            title=""
+            store={store}
+            authProvider={authProvider}
+            loginPage={Login}
+            layout={Layout}
+            disableTelemetry
+            lightTheme={lightTheme}
+            darkTheme={darkTheme}
+            defaultTheme="light"
         >
-          <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign in
-          </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-              variant="standard"
+            <CustomRoutes>
+                <Route path="/segments" element={<Segments />} />
+            </CustomRoutes>
+            <Resource name="customers" {...visitors} />
+            <Resource
+                name="commands"
+                {...orders}
+                options={{ label: 'Orders' }}
             />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              variant="standard"
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary"/>}
-              label="Remember me"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2}}
-            >
-              Sign In
-            </Button>
-          </Box>
-        </Box>
-      </Container>
-  );
-}
+            <Resource name="invoices" {...invoices} />
+            <Resource name="products" {...products} />
+            <Resource name="categories" {...categories} />
+            <Resource name="reviews" {...reviews} />
+        </Admin>
+    );
+};
+
+const AppWrapper = () => (
+    <StoreContextProvider value={store}>
+        <App />
+    </StoreContextProvider>
+);
+
+export default AppWrapper;
