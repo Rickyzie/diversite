@@ -37,7 +37,7 @@ class WebVisitFilter implements Filter {
 		// 已登入
 		if(userDetails != null) {
 			System.err.println("Been Login");
-			if(uri.contains("/api/users/login") || uri.contains("/api/users/register")) {
+			if(uri.contains("/api/users/login") || uri.contains("/api/users/signup")) {
 				res.sendRedirect("/");
 			}
 			else {
@@ -46,8 +46,7 @@ class WebVisitFilter implements Filter {
 		}
 		// 未登入
 		else {
-			System.err.println("No Login");
-			if(uri.contains("/api/users/login") || uri.contains("//api/users/signup")) {
+			if(uri.contains("/api/users/login")) {
 				chain.doFilter(request, response);
 			}
 			else {
@@ -65,10 +64,6 @@ class WebVisitFilter implements Filter {
 
 @Configuration
 public class WebVisitFilterConfig {
-
-	/**
-	 * 注册 过滤器 Filter
-	 */
 	@Bean
 	public FilterRegistrationBean<Filter> webVisitFilterConfigRegistration() {
 		//匹配拦截 URL
