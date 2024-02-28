@@ -4,6 +4,8 @@ import java.util.Collections;
 import java.util.List;
 
 import com.diversite.entity.user.UserEntity;
+import com.diversite.enumeration.AdminPrivilege;
+import com.diversite.enumeration.UserPrivilege;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -27,11 +29,7 @@ public class UserAccountService implements  UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserEntity userEntity = userService.findByEmail(username);
         if(userEntity == null) throw new UsernameNotFoundException("無此帳號");
-        UserAccount userAccount = new UserAccount();
-        userAccount.setId(String.valueOf(userEntity.getId()));
-        userAccount.setAccount(userEntity.getEmail());
-        userAccount.setPassword(userEntity.getPasswordHash());
-        List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("USER")); // Example authority
+        List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority(UserPrivilege.NORMAL_USER_PRIVILEGE.getPrivilege())); // Example authority
         return new User(userEntity.getEmail(), userEntity.getPasswordHash(), authorities);
     }
 }
