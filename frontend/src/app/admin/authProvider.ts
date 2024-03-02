@@ -1,18 +1,25 @@
+import { AdminLogin } from '@/service/adminService';
 import { AuthProvider } from 'react-admin';
 
+async function login({ username, password }: {username: string, password: string}) {
+    try {
+        const data = await AdminLogin(username, password);
+        if(data?.status === "success"){
+            return { redirectTo: "/customer"};
+        }
+    } catch (error) {
+        throw error;
+    }
+    
+}
+
 const authProvider: AuthProvider = {
-    login: ({ username }) => {
-        localStorage.setItem('username', username);
-        // accept all username/password combinations
-        return Promise.resolve();
-    },
+    login: login,
     logout: () => {
-        localStorage.removeItem('username');
         return Promise.resolve();
     },
     checkError: () => Promise.resolve(),
-    checkAuth: () =>
-        localStorage.getItem('username') ? Promise.resolve() : Promise.reject(),
+    checkAuth: () => Promise.resolve(),
     getPermissions: () => Promise.resolve(),
     getIdentity: () =>
         Promise.resolve({

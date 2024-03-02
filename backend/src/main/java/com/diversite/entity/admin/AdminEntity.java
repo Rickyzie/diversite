@@ -4,7 +4,8 @@ import lombok.Data;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.OffsetTime;
+import java.time.ZonedDateTime;
 
 
 @Data
@@ -18,6 +19,6 @@ public class AdminEntity {
     @NonNull
     private final String passwordHash;
 
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private OffsetTime createdAt;
+    private OffsetTime updatedAt;
 }

@@ -1,18 +1,22 @@
 import axios from "axios";
-import { ApiReturnType } from "./serviceTypes";
+import { ApiReturnType } from "./types/serviceTypes";
 
 const adminRequest = axios.create({
-    baseURL: '/api/admin'
+    baseURL: '/api/admins'
 });
 
-export async function AdminLogin(username: string, password: string) {
+export async function AdminLogin(adminName: string, password: string) {
     try {
-
         const { data } = await adminRequest.post<ApiReturnType<string>>(
             "/login", 
             {
-                username: username,
+                adminName: adminName,
                 password: password,
+            },
+            {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
             }
         );
         if(data.status === "error"){

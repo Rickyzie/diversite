@@ -5,7 +5,8 @@ import lombok.Data;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.OffsetTime;
+import java.time.ZonedDateTime;
 
 
 @Data
@@ -24,6 +25,6 @@ public class UserEntity {
 
     private String phoneNumber;
     private String address;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private OffsetTime createdAt;
+    private OffsetTime updatedAt;
 }

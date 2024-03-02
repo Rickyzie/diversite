@@ -13,7 +13,7 @@
     </select>
 
     <select id="findByAdminName" resultMap="findByAdminNameMap">
-        SELECT * FROM users WHERE email = #{email} LIMIT 1
+        SELECT * FROM admins WHERE admin_name = #{adminName} LIMIT 1
     </select>
     <resultMap id="findByAdminNameMap" type="com.diversite.entity.admin.AdminEntity">
         <result column="admin_name" property="adminName"/>

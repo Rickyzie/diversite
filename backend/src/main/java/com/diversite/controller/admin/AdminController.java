@@ -1,11 +1,15 @@
 package com.diversite.controller.admin;
 
 import com.diversite.entity.admin.AdminEntity;
+import com.diversite.entity.user.UserEntity;
 import com.diversite.response.ApiResponse;
 import com.diversite.service.admin.AdminAccountService;
 import com.diversite.service.admin.AdminService;
+import com.diversite.service.admin.pojo.AdminAddForm;
 import com.diversite.service.admin.pojo.AdminLoginForm;
+import com.diversite.service.user.pojo.UserSignupForm;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -42,7 +46,29 @@ public class AdminController {
                 return ResponseEntity.ok(new ApiResponse<Boolean>(true));
             }
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new ApiResponse<>("loginUser error" ));
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new ApiResponse<>("loginAdmin error" ));
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse<>(" error" ));
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<ApiResponse<Boolean>> createAdmin(AdminAddForm adminAddForm) {
+        try {
+            String passwordHash = passwordEncoder.encode(adminAddForm.getPassword());
+
+            AdminEntity adminEntity = new AdminEntity(
+                    adminAddForm.getAdminName(),
+                    passwordHash
+            );
+
+            Boolean isAdded = adminService.addAdmin(adminEntity);
+            if(isAdded){
+                return ResponseEntity.ok(new ApiResponse<Boolean>(true));
+            }
+        } catch (DuplicateKeyException e) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new ApiResponse<>("duplicate key error"));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new ApiResponse<>("addAdmin error" ));
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse<>(" error" ));
     }

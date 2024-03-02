@@ -21,7 +21,7 @@
         <result column="password_hash" property="passwordHash"/>
         <result column="phone_number" property="phoneNumber"/>
         <result column="create_at" property="createAt"/>
-        <result column="updata_at" property="updataAt"/>
+        <result column="update_at" property="updateAt"/>
     </resultMap>
 
     <select id="getUserById" resultType="com.diversite.entity.user.UserEntity">

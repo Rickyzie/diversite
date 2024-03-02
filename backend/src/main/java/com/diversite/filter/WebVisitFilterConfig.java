@@ -37,7 +37,10 @@ class WebVisitFilter implements Filter {
 		// 已登入
 		if(userDetails != null) {
 			System.err.println("Been Login");
-			if(uri.contains("/api/users/login") || uri.contains("/api/users/signup")) {
+			if(
+					uri.contains("/api/users/login") ||
+							uri.contains("/api/users/signup"
+			)) {
 				res.sendRedirect("/");
 			}
 			else {
@@ -46,7 +49,7 @@ class WebVisitFilter implements Filter {
 		}
 		// 未登入
 		else {
-			if(uri.contains("/api/users/login")) {
+			if(uri.contains("/api/users/login") || uri.contains("/api/admins/login")) {
 				chain.doFilter(request, response);
 			}
 			else {
@@ -67,7 +70,7 @@ public class WebVisitFilterConfig {
 	@Bean
 	public FilterRegistrationBean<Filter> webVisitFilterConfigRegistration() {
 		//匹配拦截 URL
-		String urlPatterns = "/api/*,/system/*";
+		String urlPatterns = "/asdasdads/*,";
 		FilterRegistrationBean<Filter> registration = new FilterRegistrationBean<Filter>();
 		registration.setDispatcherTypes(DispatcherType.REQUEST);
 		registration.setFilter(new WebVisitFilter());
