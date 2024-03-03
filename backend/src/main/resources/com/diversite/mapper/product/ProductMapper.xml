@@ -6,10 +6,37 @@
     <select id="getProductById" resultMap="productMap">
         SELECT * FROM products WHERE id = #{id}
     </select>
+    <select id="getAllProducts" resultMap="productMap">
+        SELECT * FROM products
+    </select>
     <resultMap id="productMap" type="com.diversite.entity.product.ProductEntity">
         <result column="id" property="id"/>
         <result column="name" property="name"/>
         <result column="createtime" property="createTime"/>
         <result column="isAvailable" property="isAvailable"/>
+    </resultMap>
+
+    <select id="getAllProductsWithAttributes" resultMap="productWithAttributesMap">
+        SELECT p.*, a.id as attribute_id, a.name as attribute_name, ARRAY_AGG(av.value) as attribute_values
+        FROM products p
+                 LEFT JOIN product_attribute pa ON p.id = pa.product_id
+                 LEFT JOIN attributes a ON pa.attribute_id = a.id
+                 LEFT JOIN attribute_values av ON a.id = av.attribute_id
+        GROUP BY p.id, a.id
+    </select>
+
+    <!-- Existing result maps -->
+
+    <!-- New result map for product with attributes -->
+    <resultMap id="productWithAttributesMap" type="com.diversite.entity.product.ProductEntity">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="createtime" property="createTime"/>
+        <result column="isAvailable" property="isAvailable"/>
+        <collection property="productAttributeEntityList" ofType="com.diversite.entity.productAttribute.ProductAttributeEntity" >
+            <id column="attribute_id" property="attributeId"/>
+            <result column="attribute_name" property="attributeName"/>
+            <result column="attribute_values" property="attributeValues" typeHandler="org.apache.ibatis.type.ArrayTypeHandler"/>
+        </collection>
     </resultMap>
 </mapper>

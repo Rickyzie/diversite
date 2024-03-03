@@ -33,8 +33,8 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public List<ProductEntity> getAllProducts() {
-        return productMapper.getAllProducts();
+    public List<ProductEntity> getAllProductsWithAttributes() {
+        return productMapper.getAllProductsWithAttributes();
     }
 
     @Transactional

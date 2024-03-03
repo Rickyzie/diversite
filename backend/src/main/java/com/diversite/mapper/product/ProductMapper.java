@@ -9,6 +9,7 @@ public interface ProductMapper {
     void insertProduct(ProductEntity productEntity);
     ProductEntity getProductById(Integer id);
     List<ProductEntity> getAllProducts();
+    List<ProductEntity> getAllProductsWithAttributes();
     void updateProduct(ProductEntity productEntity);
     void deleteProduct(Integer id);
 }
