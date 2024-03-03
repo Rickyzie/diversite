@@ -5,7 +5,7 @@ import Container from "@mui/material/Container";
 import { ThemeProvider } from "@emotion/react";
 import theme from "../../component/theme/theme"
 import CssBaseline from "@mui/material/CssBaseline";
-
+import StoreProvider from "./lib/StoreProvider";
 
 export default function GlobalLayout ({
     children,
@@ -17,7 +17,9 @@ export default function GlobalLayout ({
             <CssBaseline enableColorScheme />
             <Topbar/>
             <Container maxWidth="xl">
-            {children}            
+              <StoreProvider>
+                {children} 
+              </StoreProvider>
             </Container>
         </ThemeProvider>
     )

@@ -5,7 +5,7 @@ async function login({ username, password }: {username: string, password: string
     try {
         const data = await AdminLogin(username, password);
         if(data?.status === "success"){
-            return { redirectTo: "/customer"};
+            return data;
         }
     } catch (error) {
         throw error;
