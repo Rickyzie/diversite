@@ -1,13 +1,12 @@
 package com.diversite.controller.admin;
 
+import com.diversite.controller.admin.pojo.AdminInfo;
 import com.diversite.entity.admin.AdminEntity;
-import com.diversite.entity.user.UserEntity;
 import com.diversite.response.ApiResponse;
 import com.diversite.service.admin.AdminAccountService;
 import com.diversite.service.admin.AdminService;
 import com.diversite.service.admin.pojo.AdminAddForm;
 import com.diversite.service.admin.pojo.AdminLoginForm;
-import com.diversite.service.user.pojo.UserSignupForm;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
@@ -48,7 +47,29 @@ public class AdminController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new ApiResponse<>("loginAdmin error" ));
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse<>(" error" ));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse<>("error" ));
+    }
+
+
+
+    @PostMapping("/logout")
+    public ResponseEntity<ApiResponse<Boolean>> logoutAdmin(HttpSession session) {
+        try {
+            // Invalidate the current session and remove any associated data
+            session.invalidate();
+            // Return a successful response indicating the user has been logged out
+            return ResponseEntity.ok(new ApiResponse<>(true));
+        } catch (Exception e) {
+            // In case of any exceptions, return a server error response
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse<>("Logout error"));
+        }
+    }
+
+    @GetMapping("/info")
+    public ResponseEntity<ApiResponse<AdminInfo>> getAdminInfoBySession(HttpSession session) {
+        UserDetails userDetails = (UserDetails)session.getAttribute("admin");
+        AdminInfo adminInfo = new AdminInfo(userDetails.getUsername());
+        return ResponseEntity.ok(new ApiResponse<AdminInfo>(adminInfo));
     }
 
     @PostMapping("/add")
@@ -73,11 +94,6 @@ public class AdminController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse<>(" error" ));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<AdminEntity> getAdminById(@PathVariable Integer id) {
-        AdminEntity adminEntity = adminService.getAdminById(id);
-        return ResponseEntity.ok(adminEntity);
-    }
 
     @GetMapping("/session")
     public ResponseEntity<ApiResponse<Boolean>> testSession(HttpSession session) {
@@ -89,11 +105,6 @@ public class AdminController {
     }
 
 
-    @GetMapping
-    public ResponseEntity<List<AdminEntity>> getAllAdmins() {
-        List<AdminEntity> admins = adminService.getAllAdmins();
-        return ResponseEntity.ok(admins);
-    }
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateAdmin(@PathVariable Integer id, @RequestBody AdminEntity adminEntity) {
