@@ -1,8 +1,9 @@
 import axios from "axios";
 import { ApiReturnType } from "./types/serviceTypes";
+import { UserInfo } from "./types/adminServiceTypes";
 
 const adminRequest = axios.create({
-    baseURL: '/api/admins'
+    baseURL: '/api/admin'
 });
 
 export async function adminLogin(adminName: string, password: string) {
@@ -58,4 +59,26 @@ export async function getAdminInfo() {
     }catch(error){
         throw error;
     }
+}
+
+export async function getAdminAllUser() {
+    try {
+        const { data } = await adminRequest.get<ApiReturnType<UserInfo[]>>(
+            "/getAllUsers"
+        );
+        if(data.status === "error"){
+            throw data;
+        }else if (data.status === "success"){
+            return data;
+        }
+    }catch(error){
+        throw error;
+    }
+}
+
+export default {
+    adminLogin, 
+    adminLogout,
+    getAdminInfo,
+    getAdminAllUser,
 }

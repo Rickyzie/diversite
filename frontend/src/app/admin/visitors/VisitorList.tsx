@@ -12,6 +12,7 @@ import {
     SearchInput,
     SelectColumnsButton,
     TopToolbar,
+    useRecordContext,
 } from 'react-admin';
 import { useMediaQuery, Theme } from '@mui/material';
 
@@ -39,6 +40,8 @@ const VisitorListActions = () => (
 );
 
 const VisitorList = () => {
+    const record = useRecordContext();
+    console.log(record)
     const isXsmall = useMediaQuery<Theme>(theme =>
         theme.breakpoints.down('sm')
     );
