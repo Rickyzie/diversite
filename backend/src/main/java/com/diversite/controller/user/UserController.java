@@ -1,9 +1,9 @@
 package com.diversite.controller.user;
 
-import com.diversite.service.user.UserAccount;
+import com.diversite.entity.user.UserInfo;
 import com.diversite.service.user.UserAccountService;
-import com.diversite.service.user.pojo.UserLoginForm;
-import com.diversite.service.user.pojo.UserSignupForm;
+import com.diversite.entity.user.UserLoginForm;
+import com.diversite.entity.user.UserSignupForm;
 import com.diversite.entity.user.UserEntity;
 import com.diversite.response.ApiResponse;
 import com.diversite.service.user.UserService;
@@ -16,7 +16,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
@@ -92,9 +91,9 @@ public class UserController {
 
 
     @GetMapping
-    public ResponseEntity<List<UserEntity>> getAllUsers() {
-        List<UserEntity> users = userService.getAllUsers();
-        return ResponseEntity.ok(users);
+    public ResponseEntity<List<UserInfo>> getAllUsers() {
+        List<UserInfo> UserInfos = userService.getAllUsers();
+        return ResponseEntity.ok(UserInfos);
     }
 
     @PutMapping("/{id}")

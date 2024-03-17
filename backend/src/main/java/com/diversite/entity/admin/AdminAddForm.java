@@ -1,4 +1,4 @@
-package com.diversite.service.admin.pojo;
+package com.diversite.entity.admin;
 
 import lombok.Data;
 

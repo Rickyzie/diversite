@@ -1,12 +1,13 @@
 package com.diversite.controller.admin;
 
-import com.diversite.controller.admin.pojo.AdminInfo;
+import com.diversite.entity.admin.AdminInfo;
 import com.diversite.entity.admin.AdminEntity;
+import com.diversite.entity.user.UserInfo;
 import com.diversite.response.ApiResponse;
-import com.diversite.service.admin.AdminAccountService;
 import com.diversite.service.admin.AdminService;
-import com.diversite.service.admin.pojo.AdminAddForm;
-import com.diversite.service.admin.pojo.AdminLoginForm;
+import com.diversite.entity.admin.AdminAddForm;
+import com.diversite.entity.admin.AdminLoginForm;
+import com.diversite.service.user.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
@@ -16,20 +17,45 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/admins")
+@RequestMapping("/api/admin")
 public class AdminController {
 
     private final AdminService adminService;
-    private final AdminAccountService adminAccountService;
+    private final UserService userService;
     private final BCryptPasswordEncoder passwordEncoder;
 
 
-    public AdminController(AdminService adminService, AdminAccountService adminAccountService, BCryptPasswordEncoder passwordEncoder) {
+    public AdminController(AdminService adminService, UserService userService, BCryptPasswordEncoder passwordEncoder) {
         this.adminService = adminService;
-        this.adminAccountService = adminAccountService;
+        this.userService = userService;
         this.passwordEncoder = passwordEncoder;
+    }
+
+    public boolean checkHasSession(HttpSession session, String attributeName) {
+        return Optional.ofNullable((Integer) session.getAttribute(attributeName)).isPresent();
+    }
+
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<AdminInfo>>> getAdmins(HttpSession session) {
+        List<AdminInfo> AdminInfos = adminService.getAllAdmins();
+        return ResponseEntity.ok(new ApiResponse<List<AdminInfo>>(AdminInfos));
+    }
+
+    @GetMapping("getAllUsers")
+    public ResponseEntity<ApiResponse<List<UserInfo>>> adminGetAllUsers(HttpSession session) {
+        try{
+            if(checkHasSession(session, "admin")){
+                List<UserInfo> UserInfos = userService.getAllUsers();
+                return ResponseEntity.ok(new ApiResponse<List<UserInfo>>(UserInfos));
+            }else{
+                throw new Exception();
+            }
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new ApiResponse<>("adminGetAllUsers error" ));
+        }
     }
 
 
@@ -40,8 +66,7 @@ public class AdminController {
             boolean isMatch = passwordEncoder.matches(adminLoginForm.getPassword(), adminEntity.getPasswordHash());
 
             if(isMatch){
-                UserDetails userDetails = adminAccountService.loadUserByUsername(adminEntity.getAdminName());
-                session.setAttribute("admin", userDetails);
+                session.setAttribute("admin", adminEntity.getId());
                 return ResponseEntity.ok(new ApiResponse<Boolean>(true));
             }
         } catch (Exception e) {
@@ -67,8 +92,10 @@ public class AdminController {
 
     @GetMapping("/info")
     public ResponseEntity<ApiResponse<AdminInfo>> getAdminInfoBySession(HttpSession session) {
-        UserDetails userDetails = (UserDetails)session.getAttribute("admin");
-        AdminInfo adminInfo = new AdminInfo(userDetails.getUsername());
+        Integer id = (Integer)session.getAttribute("admin");
+        AdminEntity adminEntity = adminService.getAdminById(id);
+
+        AdminInfo adminInfo = new AdminInfo(adminEntity.getId(), adminEntity.getAdminName(),  adminEntity.getCreatedAt(), adminEntity.getUpdatedAt());
         return ResponseEntity.ok(new ApiResponse<AdminInfo>(adminInfo));
     }
 
@@ -119,3 +146,5 @@ public class AdminController {
         return ResponseEntity.ok().build();
     }
 }
+
+

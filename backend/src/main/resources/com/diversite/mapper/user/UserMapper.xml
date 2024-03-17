@@ -28,9 +28,19 @@
         SELECT * FROM users WHERE id = #{id} LIMIT 1
     </select>
 
-    <select id="getAllUsers" resultType="com.diversite.entity.user.UserEntity">
-        SELECT * FROM users
+
+    <select id="getAllUsers" resultMap="getAllUsersMap">
+        SELECT id, name, email, phone_number, address, created_at, updated_at FROM users
     </select>
+    <resultMap id="getAllUsersMap" type="com.diversite.entity.user.UserInfo">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="email" property="email"/>
+        <result column="address" property="address"/>
+        <result column="phone_number" property="phoneNumber"/>
+        <result column="created_at" property="createdAt" javaType="java.time.OffsetTime"/>
+        <result column="updated_at" property="updatedAt" javaType="java.time.OffsetTime"/>
+    </resultMap>
 
     <update id="updateUser">
         UPDATE users

@@ -1,6 +1,7 @@
 package com.diversite.service.user;
 
 import com.diversite.entity.user.UserEntity;
+import com.diversite.entity.user.UserInfo;
 import com.diversite.mapper.user.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -40,7 +41,7 @@ public class UserService  {
 
 
     @Transactional(readOnly = true)
-    public List<UserEntity> getAllUsers() {
+    public List<UserInfo> getAllUsers() {
         return userMapper.getAllUsers();
     }
 

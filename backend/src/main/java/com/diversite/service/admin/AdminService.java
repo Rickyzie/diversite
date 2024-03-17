@@ -2,6 +2,7 @@ package com.diversite.service.admin;
 
 import com.diversite.entity.admin.AdminEntity;
 
+import com.diversite.entity.admin.AdminInfo;
 import com.diversite.mapper.admin.AdminMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,7 +41,7 @@ public class AdminService  {
 
 
     @Transactional(readOnly = true)
-    public List<AdminEntity> getAllAdmins() {
+    public List<AdminInfo> getAllAdmins() {
         return adminMapper.getAllAdmins();
     }
 
