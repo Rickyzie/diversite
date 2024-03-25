@@ -25,7 +25,7 @@ public class UserService  {
     }
 
     @Transactional(readOnly = true)
-    public UserEntity getUserById(Integer id) {
+    public UserInfo getUserById(Integer id) {
         return userMapper.getUserById(id);
     }
 

@@ -7,6 +7,7 @@ export default function UserEdit(){
             <SimpleForm>
                 <TextInput disabled source="id"/>
                 <TextInput  source="name"/>
+                <TextInput  source="email"/>
                 <TextInput  source="phoneNumber"/>
                 <TextInput  source="address"/>
             </SimpleForm>

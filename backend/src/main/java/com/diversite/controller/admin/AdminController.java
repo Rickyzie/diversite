@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/admin")
+@RequestMapping("/api/v1/admin")
 public class AdminController {
 
     private final AdminService adminService;
@@ -44,12 +44,26 @@ public class AdminController {
         return ResponseEntity.ok(new ApiResponse<List<AdminInfo>>(AdminInfos));
     }
 
-    @GetMapping("getAllUsers")
+    @GetMapping("/user")
     public ResponseEntity<ApiResponse<List<UserInfo>>> adminGetAllUsers(HttpSession session) {
         try{
             if(checkHasSession(session, "admin")){
-                List<UserInfo> UserInfos = userService.getAllUsers();
-                return ResponseEntity.ok(new ApiResponse<List<UserInfo>>(UserInfos));
+                List<UserInfo> userInfos = userService.getAllUsers();
+                return ResponseEntity.ok(new ApiResponse<List<UserInfo>>(userInfos));
+            }else{
+                throw new Exception();
+            }
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new ApiResponse<>("adminGetAllUsers error" ));
+        }
+    }
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<ApiResponse<UserInfo>> adminGetUserById(@PathVariable Integer id, HttpSession session) {
+        try{
+            if(checkHasSession(session, "admin")){
+                UserInfo userInfo = userService.getUserById(id);
+                return ResponseEntity.ok(new ApiResponse<UserInfo>(userInfo));
             }else{
                 throw new Exception();
             }

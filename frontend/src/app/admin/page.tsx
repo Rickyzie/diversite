@@ -24,38 +24,13 @@ import users from './users';
 import Segments from './segments/Segments';
 import visitors from './visitors';
 import { themes, ThemeName } from './themes/themes';
-import AdminService from '@/service/adminService';
-import { UserInfo } from '@/service/types/adminServiceTypes';
+import adminDataProvider from './adminDataProvider';
 
 
 
-const defaultDataProvider: any = {
-    // @ts-ignore
-    create: () => Promise.resolve({ data: { id: 0 } }),
-    // @ts-ignore
-    delete: () => Promise.resolve({ data: {} }),
-    deleteMany: () => Promise.resolve({}),
-    getList: async (resource: string, params: GetListParams) => {
-        switch(resource){
-            case "users":
-                const result = await AdminService.getAdminAllUser(); 
-                if(result){
-                    return { data: result.data, total:1};
-                }else{
-                    throw new Error();
-                }
-            default:
-                return {data: [], total:1}
-        }
-    },
-    getMany: () => Promise.resolve({ data: [] }),
-    getManyReference: () => Promise.resolve({ data: [], total: 0 }),
-    // @ts-ignore
-    getOne: () => Promise.resolve({ data: {id: 1} }),
-    // @ts-ignore
-    update: () => Promise.resolve({ data: {} }),
-    updateMany: () => Promise.resolve({}),
-};
+
+
+
 
 const store = localStorageStore(undefined, 'ECommerce');
 
@@ -67,7 +42,7 @@ const App = () => {
         <Admin
             title=""
             store={store}
-            dataProvider={defaultDataProvider}
+            dataProvider={adminDataProvider}
             authProvider={authProvider}
             loginPage={Login}
             layout={Layout}
@@ -76,7 +51,7 @@ const App = () => {
             darkTheme={darkTheme}
             defaultTheme="light"
         >
-            <Resource name="users" {...users} />
+            <Resource name="user" {...users} />
         </Admin>
     );
 };

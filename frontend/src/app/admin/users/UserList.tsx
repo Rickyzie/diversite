@@ -1,4 +1,4 @@
-import { Datagrid, EditButton, List, NumberField, Show, SimpleShowLayout, TextField } from "react-admin";
+import { Datagrid, DeleteButton, EditButton, List, NumberField, Show, SimpleShowLayout, TextField } from "react-admin";
 
 export default function UserList(){
     return (
@@ -6,11 +6,13 @@ export default function UserList(){
             <Datagrid>
                 <NumberField source="id" />
                 <TextField source="name" />
+                <TextField source="email"/>
                 <TextField source="phoneNumber"/>
                 <TextField source="address"/>
                 <TextField source="createdAt"/>
                 <TextField source="updatedAt"/>
-                <EditButton/>
+                <EditButton resource="user"/>
+                <DeleteButton resource="user"/>
             </Datagrid>
         </List>
     )

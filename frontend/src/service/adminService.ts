@@ -3,7 +3,7 @@ import { ApiReturnType } from "./types/serviceTypes";
 import { UserInfo } from "./types/adminServiceTypes";
 
 const adminRequest = axios.create({
-    baseURL: '/api/admin'
+    baseURL: '/api/v1/admin'
 });
 
 export async function adminLogin(adminName: string, password: string) {
@@ -64,7 +64,22 @@ export async function getAdminInfo() {
 export async function getAdminAllUser() {
     try {
         const { data } = await adminRequest.get<ApiReturnType<UserInfo[]>>(
-            "/getAllUsers"
+            "/user"
+        );
+        if(data.status === "error"){
+            throw data;
+        }else if (data.status === "success"){
+            return data;
+        }
+    }catch(error){
+        throw error;
+    }
+}
+
+export async function getAdminUserById(id: string) {
+    try {
+        const { data } = await adminRequest.get<ApiReturnType<UserInfo>>(
+            `/user/${id}`
         );
         if(data.status === "error"){
             throw data;
@@ -81,4 +96,5 @@ export default {
     adminLogout,
     getAdminInfo,
     getAdminAllUser,
+    getAdminUserById,
 }

@@ -24,15 +24,15 @@
         <result column="update_at" property="updateAt"/>
     </resultMap>
 
-    <select id="getUserById" resultType="com.diversite.entity.user.UserEntity">
-        SELECT * FROM users WHERE id = #{id} LIMIT 1
+    <select id="getUserById" resultMap="userInfoMap">
+        SELECT id, name, email, phone_number, address, created_at, updated_at FROM users WHERE id = #{id} LIMIT 1
     </select>
 
 
-    <select id="getAllUsers" resultMap="getAllUsersMap">
+    <select id="getAllUsers" resultMap="userInfoMap">
         SELECT id, name, email, phone_number, address, created_at, updated_at FROM users
     </select>
-    <resultMap id="getAllUsersMap" type="com.diversite.entity.user.UserInfo">
+    <resultMap id="userInfoMap" type="com.diversite.entity.user.UserInfo">
         <result column="id" property="id"/>
         <result column="name" property="name"/>
         <result column="email" property="email"/>

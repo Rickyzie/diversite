@@ -9,7 +9,7 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
      Boolean insertUser(UserEntity userEntity);
-     UserEntity getUserById(Integer id);
+     UserInfo getUserById(Integer id);
      UserEntity findByEmailAndPassword(String email, String passwordHash);
      UserEntity findByEmail(String email);
      List<UserInfo> getAllUsers();

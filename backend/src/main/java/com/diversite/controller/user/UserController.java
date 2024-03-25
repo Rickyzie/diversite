@@ -75,9 +75,9 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserEntity> getUserById(@PathVariable Integer id) {
-        UserEntity userEntity = userService.getUserById(id);
-        return ResponseEntity.ok(userEntity);
+    public ResponseEntity<UserInfo> getUserById(@PathVariable Integer id) {
+        UserInfo userInfo = userService.getUserById(id);
+        return ResponseEntity.ok(userInfo);
     }
 
     @GetMapping("/session")
