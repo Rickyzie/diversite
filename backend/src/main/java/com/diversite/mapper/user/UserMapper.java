@@ -13,7 +13,7 @@ public interface UserMapper {
      UserEntity findByEmailAndPassword(String email, String passwordHash);
      UserEntity findByEmail(String email);
      List<UserInfo> getAllUsers();
-     void updateUser(UserEntity userEntity);
+     void updateUser(UserInfo userInfo);
      void deleteUser(Integer id);
 }
 

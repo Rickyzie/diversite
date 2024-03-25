@@ -44,11 +44,19 @@
 
     <update id="updateUser">
         UPDATE users
-        SET name = #{name},
-            email = #{email},
-            password_hash = #{passwordHash},
-            phone_number = #{phoneNumber},
-            address = #{address},
+        SET
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="email != null">
+                email = #{email},
+            </if>
+            <if test="phoneNumber != null">
+                phone_number = #{phoneNumber},
+            </if>
+            <if test="address != null">
+                address = #{address},
+            </if>
             updated_at = CURRENT_TIMESTAMP
         WHERE id = #{id}
     </update>

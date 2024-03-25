@@ -72,6 +72,19 @@ public class AdminController {
         }
     }
 
+    @PutMapping ("/user/{id}")
+    public ResponseEntity<ApiResponse<Boolean>> adminUpdateUserById(UserInfo userInfo, HttpSession session){
+        try{
+            if(checkHasSession(session, "admin")){
+                userService.updateUser(userInfo);
+                return ResponseEntity.ok(new ApiResponse<>(true));
+            }else{
+                throw new Exception();
+            }
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new ApiResponse<>("adminGetAllUsers error" ));
+        }
+    }
 
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<Boolean>> loginAdmin(AdminLoginForm adminLoginForm, HttpSession session) {

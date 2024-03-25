@@ -46,10 +46,9 @@ public class UserService  {
     }
 
     @Transactional
-    public void updateUser(UserEntity userEntity) {
-        userMapper.updateUser(userEntity);
+    public void updateUser(UserInfo userInfo) {
+        userMapper.updateUser(userInfo);
     }
-
     @Transactional
     public void deleteUser(Integer id) {
         userMapper.deleteUser(id);
