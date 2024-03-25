@@ -91,10 +91,44 @@ export async function getAdminUserById(id: string) {
     }
 }
 
+export async function updateAdminUser({
+    id,
+    name,
+    email,
+    address,
+    phoneNumber,
+}: Partial<UserInfo>) {
+    try {
+        const { data } = await adminRequest.put<ApiReturnType<UserInfo>>(
+            `/user/${id}`,
+            {
+                id: id,
+                name: name,
+                email: email,
+                address: address,
+                phoneNumber: phoneNumber,
+            },
+            {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+            }
+        );
+        if(data.status === "error"){
+            throw data;
+        }else if (data.status === "success"){
+            return data;
+        }
+    }catch(error){
+        throw error;
+    }
+}
+
 export default {
     adminLogin, 
     adminLogout,
     getAdminInfo,
     getAdminAllUser,
     getAdminUserById,
+    updateAdminUser, 
 }

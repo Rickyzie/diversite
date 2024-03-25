@@ -7,6 +7,6 @@ export interface UserInfo extends RaRecord{
     email: string;
     address: string;
     phoneNumber: string;
-    createdAt: string;
-    updatedAt: string;
+    createdAt?: string;
+    updatedAt?: string;
 }
